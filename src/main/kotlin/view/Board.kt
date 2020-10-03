@@ -1,61 +1,74 @@
 package view
 
+import controller.Controller
 import javafx.event.EventHandler
-import javafx.scene.layout.GridPane
 import javafx.scene.paint.Color
 import javafx.scene.shape.StrokeType
 import model.TicBoard
 import tornadofx.*
-import controller.Controller
+import kotlin.system.exitProcess
 
 class Board : View() {
-    var grid: GridPane? = null
-    private var tic = TicBoard()
-    private val boardSize = tic.boardHeight - 1
+    private val tic = TicBoard()
     private val controller = Controller()
-
-    override val root = stackpane {
-
-        grid = gridpane {
-            maxHeightProperty().bind(this@stackpane.widthProperty())
-            maxWidthProperty().bind(this@stackpane.heightProperty())
-
-            prefHeightProperty().bind(this@stackpane.heightProperty())
-            prefWidthProperty().bind(this@stackpane.widthProperty())
-
-            for (row in 0..boardSize) {
-                row {
-                    for (col in 0..boardSize) {
-                        val color = Color.WHITESMOKE
-                        stackpane {
-                            fitToParentSize()
-                            onMouseClicked = EventHandler {
-                                controller.selectNode(row, col, grid)
-                            }
-                            rectangle {
-                                heightProperty().bind(this@stackpane.heightProperty())
-                                widthProperty().bind(this@stackpane.widthProperty())
-
-                                fill = color
-                                stroke = Color.BLACK
-                                strokeType = StrokeType.OUTSIDE
-                                strokeWidth = 0.3
-                            }
-                            imageview {
-                                fitHeightProperty().bind(this@stackpane.heightProperty())
-                                fitWidthProperty().bind(this@stackpane.widthProperty())
+    override var root = borderpane {
+        top = hbox {
+            button("New Game") {
+                setOnAction { controller.newBoard(tic) }
+            }
+            button("Exit") {
+                setOnAction { exitProcess(0) }
+            }
+        }
+        center = stackpane {
+            fitToParentSize()
+            tic.grid = gridpane {
+                maxHeightProperty().bind(this@stackpane.widthProperty())
+                maxWidthProperty().bind(this@stackpane.heightProperty())
+                prefHeightProperty().bind(this@stackpane.heightProperty())
+                prefWidthProperty().bind(this@stackpane.widthProperty())
+                for (row in 0 until tic.boardWidth) {
+                    row {
+                        for (col in 0 until tic.boardHeight) {
+                            stackpane {
+                                fitToParentSize()
+                                onMouseClicked = EventHandler {
+                                    controller.selectNode(row, col, tic)
+                                }
+                                rectangle {
+                                    heightProperty().bind(this@stackpane.heightProperty())
+                                    widthProperty().bind(this@stackpane.widthProperty())
+                                    fill = Color.rgb(242, 242, 242)
+                                    stroke = Color.rgb(141, 160, 189)
+                                    strokeType = StrokeType.OUTSIDE
+                                    strokeWidth = 0.3
+                                }
+                                imageview {
+                                    fitHeightProperty().bind(this@stackpane.heightProperty().multiply(0.5))
+                                    fitWidthProperty().bind(this@stackpane.widthProperty().multiply(0.5))
+                                }
                             }
                         }
                     }
                 }
-            }
+                for (i in 0 until tic.boardHeight) {
+                    constraintsForColumn(i).percentWidth = tic.boardHeight.toDouble()
 
-            for (i in 0..boardSize) {
-                constraintsForRow(i).percentHeight = 12.5
-                constraintsForColumn(i).percentWidth = 12.5
+                }
+                for (i in 0 until tic.boardWidth) {
+                    constraintsForRow(i).percentHeight = tic.boardWidth.toDouble()
+
+                }
             }
         }
     }
+
+    init {
+        title = "Tic Tac Toe"
+        primaryStage.width = 1000.0
+        primaryStage.height = 1000.0
+    }
 }
+
 
 

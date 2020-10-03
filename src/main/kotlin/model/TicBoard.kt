@@ -1,22 +1,27 @@
 package model
 
-import controller.Player
+import javafx.scene.layout.GridPane
 
 
-class TicBoard() {
-    val boardHeight = 20
-    val boardWidth = 20
-    var boardSqu = Array(boardWidth) { arrayOfNulls<Boolean?>(boardHeight) }
+class TicBoard {
+    val boardHeight = 10
+    var grid = GridPane()
+    val boardWidth = 10
+    var winLine = mutableSetOf<Pair<Int, Int>>()
+    var boardSqu = Array(boardHeight) { arrayOfNulls<Boolean?>(boardWidth) }
 
     fun resetBoard() {
-        boardSqu = Array(boardWidth) { arrayOfNulls<Boolean?>(boardHeight) }
+        boardSqu = Array(boardHeight) { arrayOfNulls<Boolean?>(boardWidth) }
+        winLine = mutableSetOf<Pair<Int, Int>>()
     }
 
     fun isEnd(row: Int, col: Int): Int {
         var r = 0
         var c = 0
-        val playerX = TicPlayer(true, "X")
-        val playerO = TicPlayer(false, "O")
+        var result = 0
+        val playerX = TicPlayer()
+        val playerO = TicPlayer()
+
         while (c < boardWidth - 4) {
             playerX.win = true
             playerO.win = true
@@ -35,6 +40,7 @@ class TicBoard() {
         }
 
 
+
         while (r < boardHeight - 4) {
             playerX.win = true
             playerO.win = true
@@ -47,8 +53,8 @@ class TicBoard() {
                 if (!boardSqu[r + i][col]!!) playerX.win = false
                 if (boardSqu[r + i][col]!!) playerO.win = false
             }
-            if (playerX.win) return 1
-            if (playerO.win) return 2
+            if (playerX.win) result = 1
+            if (playerO.win) result = 2
             r++
         }
 
@@ -70,8 +76,8 @@ class TicBoard() {
                 if (!boardSqu[r + i][c + i]!!) playerX.win = false
                 if (boardSqu[r + i][c + i]!!) playerO.win = false
             }
-            if (playerX.win) return 1
-            if (playerO.win) return 2
+            if (playerX.win) result = 1
+            if (playerO.win) result = 2
             r++
             c++
         }
@@ -94,12 +100,12 @@ class TicBoard() {
                 if (!boardSqu[r - i][c + i]!!) playerX.win = false
                 if (boardSqu[r - i][c + i]!!) playerO.win = false
             }
-            if (playerX.win) return 1
-            if (playerO.win) return 2
+            if (playerX.win) result = 1
+            if (playerO.win) result = 2
             r--
             c++
         }
-        return 0
+        return result
     }
 
 }
