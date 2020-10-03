@@ -1,5 +1,6 @@
 package model
 
+import javafx.scene.control.Label
 import javafx.scene.layout.GridPane
 
 
@@ -14,7 +15,6 @@ class TicBoard {
         boardSqu = Array(boardHeight) { arrayOfNulls<Boolean?>(boardWidth) }
         winLine = setOf<Pair<Int, Int>>()
     }
-
     fun isEnd(row: Int, col: Int): Int {
         var r = 0
         var c = 0
@@ -42,7 +42,6 @@ class TicBoard {
             }
             if (player.win) {
                 winLine = line
-                println(winLine)
                 return if (player.typeX) 1
                 else 2
             }
@@ -83,8 +82,7 @@ class TicBoard {
                 if (boardSqu[r + i][c + i] == null) {
                     player.win = false
                     break
-                }
-                else {
+                } else {
                     line.add(Pair(r + i, c + i))
                     if (boardSqu[r + i][c + i] != type) {
                         player.win = false
@@ -113,8 +111,7 @@ class TicBoard {
                 if (boardSqu[r - i][c + i] == null) {
                     player.win = false
                     break
-                }
-                else {
+                } else {
                     line.add(Pair(r - i, c + i))
                     if (boardSqu[r - i][c + i] != type) {
                         player.win = false

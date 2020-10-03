@@ -12,7 +12,6 @@ import javafx.scene.paint.Color
 import javafx.scene.shape.Rectangle
 import model.TicBoard
 import model.TicPlayer
-import tornadofx.tag
 import kotlin.system.exitProcess
 
 class Controller {
@@ -68,15 +67,16 @@ class Controller {
     private fun winnerAlert(row: Int, col: Int, tic: TicBoard) {
         val player = tic.isEnd(row, col)
         if (player != 0) {
-            for ((row,col) in tic.winLine) {
+            for ((row, col) in tic.winLine) {
                 val node = getNode(row, col, tic)
                 if (node is StackPane) {
                     for (children in node.children) {
-                        if (children is Rectangle) children.fill = Color.rgb(250, 232, 177)
+                        if (children is Rectangle) children.fill = if (tic.boardSqu[row][col]!!) Color.rgb(219, 98, 120)
+                        else Color.rgb(55, 119, 193)
                     }
                 }
             }
-                val alert = Alert(Alert.AlertType.CONFIRMATION)
+            val alert = Alert(Alert.AlertType.CONFIRMATION)
             alert.title = "Game is end"
             alert.headerText = "Player $player win  "
             alert.contentText = " Want to play again?"
