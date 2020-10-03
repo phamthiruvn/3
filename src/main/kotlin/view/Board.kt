@@ -69,7 +69,7 @@ class Board : View() {
     }
 
     init {
-        title = "Tic Tac Toe"
+        title = "Gomoku"
         primaryStage.width = 800.0
         primaryStage.height = 1000.0
         primaryStage.isResizable = false
