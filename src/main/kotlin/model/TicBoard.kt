@@ -1,6 +1,5 @@
 package model
 
-import javafx.scene.control.Label
 import javafx.scene.layout.GridPane
 
 
@@ -36,7 +35,7 @@ class TicBoard {
                     line.add(Pair(row, c + i))
                     if (boardSqu[row][c + i] != type) {
                         player.win = false
-                        line.remove(Pair(row, c + i))
+                        line.clear()
                     }
                 }
             }
@@ -58,7 +57,7 @@ class TicBoard {
                     line.add(Pair(r + i, col))
                     if (boardSqu[r + i][col] != type) {
                         player.win = false
-                        line.remove(Pair(r + i, col))
+                        line.clear()
                     }
                 }
             }
@@ -86,7 +85,7 @@ class TicBoard {
                     line.add(Pair(r + i, c + i))
                     if (boardSqu[r + i][c + i] != type) {
                         player.win = false
-                        line.remove(Pair(r + i, c + i))
+                        line.clear()
                     }
                 }
             }
@@ -115,7 +114,7 @@ class TicBoard {
                     line.add(Pair(r - i, c + i))
                     if (boardSqu[r - i][c + i] != type) {
                         player.win = false
-                        line.remove(Pair(r - i, c + i))
+                        line.clear()
                     }
                 }
             }
