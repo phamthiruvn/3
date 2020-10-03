@@ -7,54 +7,67 @@ class TicBoard {
     val boardHeight = 10
     var grid = GridPane()
     val boardWidth = 10
-    var winLine = mutableSetOf<Pair<Int, Int>>()
+    var winLine = setOf<Pair<Int, Int>>()
     var boardSqu = Array(boardHeight) { arrayOfNulls<Boolean?>(boardWidth) }
 
     fun resetBoard() {
         boardSqu = Array(boardHeight) { arrayOfNulls<Boolean?>(boardWidth) }
-        winLine = mutableSetOf<Pair<Int, Int>>()
+        winLine = setOf<Pair<Int, Int>>()
     }
 
     fun isEnd(row: Int, col: Int): Int {
         var r = 0
         var c = 0
-        var result = 0
-        val playerX = TicPlayer()
-        val playerO = TicPlayer()
-
+        val player = TicPlayer()
+        val line = mutableSetOf<Pair<Int, Int>>()
+        var type = true
+        line.add(Pair(row, col))
+        if (boardSqu[row][col] != null) {
+            type = boardSqu[row][col]!!
+            player.typeX = type
+        }
         while (c < boardWidth - 4) {
-            playerX.win = true
-            playerO.win = true
+            player.win = true
             for (i in 0..4) {
                 if (boardSqu[row][c + i] == null) {
-                    playerX.win = false
-                    playerO.win = false
+                    player.win = false
                     break
+                } else {
+                    line.add(Pair(row, c + i))
+                    if (boardSqu[row][c + i] != type) {
+                        player.win = false
+                        line.remove(Pair(row, c + i))
+                    }
                 }
-                if (!boardSqu[row][c + i]!!) playerX.win = false
-                if (boardSqu[row][c + i]!!) playerO.win = false
             }
-            if (playerX.win) return 1
-            if (playerO.win) return 2
+            if (player.win) {
+                winLine = line
+                println(winLine)
+                return if (player.typeX) 1
+                else 2
+            }
             c++
         }
 
-
-
         while (r < boardHeight - 4) {
-            playerX.win = true
-            playerO.win = true
+            player.win = true
             for (i in 0..4) {
                 if (boardSqu[r + i][col] == null) {
-                    playerX.win = false
-                    playerO.win = false
+                    player.win = false
                     break
+                } else {
+                    line.add(Pair(r + i, col))
+                    if (boardSqu[r + i][col] != type) {
+                        player.win = false
+                        line.remove(Pair(r + i, col))
+                    }
                 }
-                if (!boardSqu[r + i][col]!!) playerX.win = false
-                if (boardSqu[r + i][col]!!) playerO.win = false
             }
-            if (playerX.win) result = 1
-            if (playerO.win) result = 2
+            if (player.win) {
+                winLine = line
+                return if (player.typeX) 1
+                else 2
+            }
             r++
         }
 
@@ -65,19 +78,25 @@ class TicBoard {
             c--
         }
         while (r < boardHeight - 4 && c < boardWidth - 4) {
-            playerX.win = true
-            playerO.win = true
+            player.win = true
             for (i in 0..4) {
                 if (boardSqu[r + i][c + i] == null) {
-                    playerX.win = false
-                    playerO.win = false
+                    player.win = false
                     break
                 }
-                if (!boardSqu[r + i][c + i]!!) playerX.win = false
-                if (boardSqu[r + i][c + i]!!) playerO.win = false
+                else {
+                    line.add(Pair(r + i, c + i))
+                    if (boardSqu[r + i][c + i] != type) {
+                        player.win = false
+                        line.remove(Pair(r + i, c + i))
+                    }
+                }
             }
-            if (playerX.win) result = 1
-            if (playerO.win) result = 2
+            if (player.win) {
+                winLine = line
+                return if (player.typeX) 1
+                else 2
+            }
             r++
             c++
         }
@@ -89,23 +108,29 @@ class TicBoard {
             c--
         }
         while (r >= 4 && c < boardHeight - 4) {
-            playerX.win = true
-            playerO.win = true
+            player.win = true
             for (i in 0..4) {
                 if (boardSqu[r - i][c + i] == null) {
-                    playerX.win = false
-                    playerO.win = false
+                    player.win = false
                     break
                 }
-                if (!boardSqu[r - i][c + i]!!) playerX.win = false
-                if (boardSqu[r - i][c + i]!!) playerO.win = false
+                else {
+                    line.add(Pair(r - i, c + i))
+                    if (boardSqu[r - i][c + i] != type) {
+                        player.win = false
+                        line.remove(Pair(r - i, c + i))
+                    }
+                }
             }
-            if (playerX.win) result = 1
-            if (playerO.win) result = 2
+            if (player.win) {
+                winLine = line
+                return if (player.typeX) 1
+                else 2
+            }
             r--
             c++
         }
-        return result
+        return 0
     }
 
 }

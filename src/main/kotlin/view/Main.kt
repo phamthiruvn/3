@@ -12,7 +12,6 @@ class Main : App(Board::class) {
     }
 }
 
-
 fun main(args: Array<String>) {
     Application.launch(Main::class.java, *args)
 }

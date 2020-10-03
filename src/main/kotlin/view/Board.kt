@@ -2,6 +2,7 @@ package view
 
 import controller.Controller
 import javafx.event.EventHandler
+import javafx.geometry.Pos
 import javafx.scene.paint.Color
 import javafx.scene.shape.StrokeType
 import model.TicBoard
@@ -13,15 +14,19 @@ class Board : View() {
     private val controller = Controller()
     override var root = borderpane {
         top = hbox {
+            alignment = Pos.CENTER
             button("New Game") {
+                setPrefSize(100.0, 75.0);
                 setOnAction { controller.newBoard(tic) }
             }
             button("Exit") {
+                setPrefSize(100.0, 75.0);
                 setOnAction { exitProcess(0) }
             }
         }
         center = stackpane {
             fitToParentSize()
+            alignment = Pos.BOTTOM_CENTER
             tic.grid = gridpane {
                 maxHeightProperty().bind(this@stackpane.widthProperty())
                 maxWidthProperty().bind(this@stackpane.heightProperty())
@@ -65,8 +70,9 @@ class Board : View() {
 
     init {
         title = "Tic Tac Toe"
-        primaryStage.width = 1000.0
+        primaryStage.width = 800.0
         primaryStage.height = 1000.0
+        primaryStage.isResizable = false
     }
 }
 
